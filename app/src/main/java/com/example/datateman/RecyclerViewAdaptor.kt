@@ -44,7 +44,8 @@ class RecyclerViewAdaptor (private val dataTeman: ArrayList<data_teman>, context
 
     @SuppressLint("SetTextI18n")
     //mengambil nilai atau value pada Recycler View berdasarkan posisi tertentu
-    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder,
+                                  @SuppressLint("RecyclerView") position: Int) {
         val Nama: String? = dataTeman.get(position).nama
         val Alamat: String? = dataTeman.get(position).alamat
         val NoHP: String? = dataTeman.get(position).no_hp
@@ -72,7 +73,10 @@ class RecyclerViewAdaptor (private val dataTeman: ArrayList<data_teman>, context
                             intent.putExtras(bundle)
                             context.startActivity(intent)
                         }
-                        1 -> {}
+                        1 -> {
+                            //menggunakan interface untuk mengirim data teman yang akan dihapus
+                            listener?.onDeleteData(dataTeman.get(position), position)
+                        }
                     }
                 })
                 alert.create()
@@ -83,14 +87,19 @@ class RecyclerViewAdaptor (private val dataTeman: ArrayList<data_teman>, context
         }
     })
     }
-
     //Menghitung Ukuran/Jumlah Data Yang Akan Ditampilkan Pada RecyclerView
     override fun getItemCount(): Int {
         return dataTeman.size
     }
-
     //Membuat Konstruktor, untuk menerima input dari Database
     init {
         this.context = context
+        (context as MyListData).also { this.listener = it }
     }
+    //Membuat interface
+    interface dataListener {
+        fun onDeleteData(data: data_teman?, position: Int)
+    }
+    //Deklarasi objek dari interface
+    var listener: dataListener?= null
 }

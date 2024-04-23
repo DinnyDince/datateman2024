@@ -24,7 +24,7 @@ class UpdateData : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUpdateDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar!!.title = "Update Data"
+        //supportActionBar!!.title = "Update Data"
 
         //mendapatkan Instance autentikasi dan referensi dari database
         auth = FirebaseAuth.getInstance()
@@ -53,7 +53,6 @@ class UpdateData : AppCompatActivity() {
             }
         })
     }
-
     //mengecek apakah ada data kosong, sebelum update
     private fun isEmpty(s: String): Boolean {
         return TextUtils.isEmpty(s)
@@ -76,7 +75,7 @@ class UpdateData : AppCompatActivity() {
         val userID = auth!!.uid
         val getKey = intent.extras!!.getString("getPrimaryKey")
         database!!.child("Admin")
-            .child(userID.toString())
+            .child(userID!!)
             .child("DataTeman")
             .child(getKey!!)
             .setValue(teman)
